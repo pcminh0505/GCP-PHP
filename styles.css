@@ -1,0 +1,60 @@
+body {
+  padding: 50px 0px;
+  background: lightgreen;
+}
+
+div {
+  margin: 10px 20px;
+}
+
+form {
+  position: relative;
+  z-index: 1;
+  background: #ffffff;
+  max-width: 1140px;
+  margin: 0 auto 100px;
+  padding: 45px;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+label {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  text-align: left;
+  width: 450px;
+  margin-right: 25px;
+}
+
+input {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.form-title {
+  font-weight: bold;
+  margin-bottom: 40px;
+  color: green;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: row;
+  font-size: 16px;
+  margin: 40px 20px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#btn-submit {
+  margin-right: 20px;
+}
+
+.required:after {
+  content: "  *";
+  color: red;
+}
