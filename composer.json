@@ -1,0 +1,8 @@
+{
+    "name": "minhpham/s3818102_asm1",
+    "description": "This is my work for assignment 1 (GCP) for Cloud Computing course",
+    "require": {
+        "google/cloud-storage": "^1.24",
+        "google/cloud-bigquery": "^1.22"
+    }
+}
