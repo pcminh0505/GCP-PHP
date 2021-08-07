@@ -1,22 +1,30 @@
 <?php 
     include('bootstrap.php'); 
-    // include('header/header-employee.php');
+    include 'action.php';
+    require_once "config.php";
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <header>
     <?php include('navbar.php');?>
-    <link rel="stylesheet" href="form.css" />
+    <link rel="stylesheet" href="css/form.css" />
 </header>
 
 <body>
-    <form method="post" action="project-crud.php">
-        <h1 class="form-title">New Project Form</h1>
+    <form method="post" action="action.php">
+        
+        <?php
+            if (isset($_GET['view'])) echo "<h1 class='form-title' style='color:blue'>Project Details</h1>";
+            else if (isset($_GET['edit'])) echo "<h1 class='form-title' style='color:blue'>Modify Project</h1>";
+            else echo "<h1 class='form-title' style='color:green'>New Project Form</h1>";
+        ?>
+
         <div class="form-group">
             <label class="required"><span>Project Name: </span> </label>
             <input
             type="text"
-            name="projectName"
+            name="name"
             class="form-control"
             placeholder="Project Name"
             required
@@ -64,7 +72,7 @@
             <label><span>Year of Completion: </span> </label>
             <input
             type="text"
-            name="completionYear"
+            name="year"
             class="form-control"
             placeholder="Year of Completion"
             />
@@ -207,7 +215,7 @@
             <label class="required"><span>Data Source: </span> </label>
             <input
             type="text"
-            name="dataSource"
+            name="source"
             class="form-control"
             placeholder="Data Source"
             required
@@ -242,10 +250,14 @@
         </div>
         <div class="form-group row">
             <div class="col-sm-6 mx-auto">
-                <a href="home.php" class="btn btn-block btn-warning">Cancel</a>
+                <a href="home.php" class="btn btn-block btn-warning">Back</a>
             </div>
             <div class="col-sm-6 mx-auto">
-                <button type="submit" name="add" class="btn btn-success btn-block "> Submit </button>
+                <?php 
+                    if (isset($_GET['view'])) echo "<a href='form.php?update=$id' name='update' class='btn btn-primary btn-block'> Update </a>";
+                    else if (isset($_GET['update'])) echo "<button type='submit' name='update' class='btn btn-primary btn-block'> Confirm </button>";
+                    else echo "<button type='submit' name='add' class='btn btn-success btn-block'> Submit </button>";
+                ?>
             </div>
         </div>
     </form>

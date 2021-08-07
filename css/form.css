@@ -1,6 +1,6 @@
 body {
   padding: 50px 0px;
-  background: lightgreen;
+  background: lightgray;
 }
 
 div {
@@ -35,7 +35,6 @@ input {
 .form-title {
   font-weight: bold;
   margin-bottom: 40px;
-  color: green;
 }
 
 .form-group {

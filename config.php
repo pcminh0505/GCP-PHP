@@ -14,6 +14,6 @@
 
     $storage->registerStreamWrapper();
 
-    $filename = "gs://pcminh-asm1/project.csv";
+    $FILE_PATH = "project.csv";
     
 ?>
