@@ -5,37 +5,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <header>
-    <?php 
-        include('navbar.php');
-        // include('header/header-employee.php');
-    ?>
+    <?php include('navbar.php');?>
+    <link rel="stylesheet" href="table.css" />
 </header>
 
 <body>
     <div class="container-fluid">
-        <div class="row justify-content-center">
+        <div class="row">
             <div class="col-md-10">
-                <h2 class="text-center text-dark">Project Management</h2>
-                <hr>
-                <!-- <?php if (isset($_SESSION['response'])) { ?>
-                <div class="alert alert-<?= $_SESSION['res_type']; ?> alert-dismissible text-center">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <b><?= $_SESSION['response']; ?></b>
-                </div>
-                <?php } unset($_SESSION['response']); ?> -->
+                <h2 class="text-dark">Mekong Infrastructure Tracker (Original Data)</h2>
             </div>
+            <div class="col-md-10">
+                <!-- Button trigger to add new project -->
+                <a class="btn btn-success" href="form.php">Add New Project</a>
+            </div>
+            <!-- <?php if (isset($_SESSION['response'])) { ?>
+            <div class="alert alert-<?= $_SESSION['res_type']; ?> alert-dismissible text-center">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <b><?= $_SESSION['response']; ?></b>
+            </div>
+            <?php } unset($_SESSION['response']); ?> -->
         </div>
-
-    <!-- <div class="row justified-content-center">
-        <form method="post" action="project-crud.php">
-            <h1 class="form-header">Add New Project</h1> -->
-            <!-- <div class="form-group">
-                <label><span>Project Name: </span> </label>
-                <input type="text" name="pname" class="form-control" placeholder="Project Name">
-            </div>
-        </form> -->
-        <table class="table table-hover">
-            <thead>
+        <hr>
+        
+        
+        <!-- <div style="overflow-x:auto;"> -->
+        <table class="table table-bordered" id="header-fixed">
+            <thead class="table-danger">
                 <tr>
                     <th>ID</th>
                     <th>Project Name</th>
@@ -61,20 +57,16 @@
                     <th>Announcement/More Information</th>
                     <th>Link</th>
                     <th>Latest Update</th>
-
+                    <th>Action</th>
                 </tr>
             </thead>
-            <!-- <tbody> 
-                <?php $file = fopen('Employee.csv', 'r');
-                    while (($line = fgetcsv($file)) !== FALSE): ?>
-                <tr>
-                    <td><?= $line[0]?></td>
-                    <td><?= $line[1]?></td>
-                    <td><?= $line[2]?></td>
-                    <td><?= $line[3]?></td>
-                    <td><?= $line[4]?></td>
-                    <td><?= $line[5]?></td>
-                    <td><?= $line[6]?></td>
+            <tbody>  
+                <?php $file = fopen('project.csv', 'r');
+                    while (($line = fgetcsv($file)) !== FALSE): 
+                        echo "<tr>";
+                        foreach($line as $column) {
+                            echo "<td>$column</td>";
+                        } ?>
                     <td>
                         <a href="home.php?update=<?= $line[0];?>" class="badge badge-primary">
                         Update</a>
@@ -83,9 +75,8 @@
                     </td>
                     <?php endwhile; fclose($file); ?>
                 </tr>
-            </tbody> -->
+            </tbody> 
         </table>
-
     </div>
 
 </body>

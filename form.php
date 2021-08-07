@@ -6,7 +6,7 @@
 <html lang="en">
 <header>
     <?php include('navbar.php');?>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="form.css" />
 </header>
 
 <body>
@@ -25,7 +25,7 @@
         <div class="form-group">
             <label class="required"><span>Subtype: </span> </label>
             <select class="custom-select" name=subtype required>
-                <option selected>Subtype</option> 
+                <option disable selected value>Subtype</option> 
                 <option value="Hydro">Hydro</option>
                 <option value="Solar">Solar</option>
                 <option value="Coal">Coal</option>
@@ -42,7 +42,7 @@
         <div class="form-group">
             <label class="required"><span>Current Status: </span> </label>
             <select class="custom-select" name=status required>
-                <option selected>Current Status</option> 
+                <option disable selected value>Current Status</option> 
                 <option value="Operational">Operational</option>
                 <option value="Planned">Planned</option>
                 <option value="Unknown">Unknown</option>
@@ -126,7 +126,7 @@
         <div class="form-group">
             <label class="required"><span>Country: </span> </label>
             <select class="custom-select" name=country required>
-                <option selected>Country</option> 
+                <option disable selected value>Country</option> 
                 <option value="Vietnam">Vietnam</option>
                 <option value="Thailand">Thailand</option>
                 <option value="Laos">Laos</option>
@@ -242,15 +242,12 @@
         </div>
         <div class="form-group row">
             <div class="col-sm-6 mx-auto">
-                <button type="submit" name="update" class="btn btn-success btn-block "> Update </button>
+                <a href="home.php" class="btn btn-block btn-warning">Cancel</a>
             </div>
             <div class="col-sm-6 mx-auto">
-                <a href="/employee" class="btn btn-block btn-warning">Cancel</a>
+                <button type="submit" name="add" class="btn btn-success btn-block "> Submit </button>
             </div>
-                <button type="button" class="btn btn-success btn-md" id="btn-submit" type="submit">Submit</button>
-            
-
         </div>
-        </form>
-    </body>
+    </form>
+</body>
 </html>
