@@ -2,6 +2,10 @@
     include('bootstrap.php'); 
     include 'action.php';
     require_once "config.php";
+
+    if (!isset($_SESSION)) {
+        session_start();
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
