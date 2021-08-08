@@ -1,6 +1,6 @@
-/* td {
-  white-space: nowrap;
-} */
+td {
+  vertical-align: middle;
+}
 th {
   white-space: nowrap;
 }

@@ -36,8 +36,8 @@
         $string = htmlspecialchars($string);
         return $string;
     }
-    
-    $update = false;
+
+
     $id = $name = $subtype = $status = $source = $capacity = $year = "";
     $sponsorCountry = $sponsorCompany = $lenderCountry = $lenderCompany = $constructionCountry = $constructionCompany = "";
     $country = $provinceState = $district = $latitude = $longitude = "" ;
@@ -47,58 +47,43 @@
     if (isset($_POST['add'])) {
 
         // Open csv file:
-        $file = fopen($FILE_PATH, "r+");
-        $existed = FALSE; // Variable to check the existence of the employee
+        $file = fopen($FILE_PATH, "a");
 
         // Collect input data from $_POST
         $id = (int) getLastestId($FILE_PATH) + 1;
         $name = cleanInput($_POST['name']);
         $subtype = $_POST['subtype'];
         $status = $_POST['status'];
-        $capacity = $_POST['capacity'];
-        $year = $_POST['year'];
-        $sponsorCountry = cleanInput($_POST['sponsorCountry']);
-        $sponsorCompany = cleanInput($_POST['sponsorCompany']);
-        $lenderCountry = cleanInput($_POST['lenderCountry']);
-        $lenderCompany = cleanInput($_POST['lenderCompany']);
-        $constructionCountry = cleanInput($_POST['constructionCountry']);
-        $constructionCompany = cleanInput($_POST['constructionCompany']);
+        $capacity = (empty($_POST['capacity']))? "N/A" : $_POST['capacity']; 
+        $year = (empty($_POST['year']))? "N/A" : $_POST['year'];
+        $sponsorCountry = (empty($_POST['sponsorCountry']))? "N/A" : cleanInput($_POST['sponsorCountry']);
+        $sponsorCompany = (empty($_POST['sponsorCompany']))? "N/A" : cleanInput($_POST['sponsorCompany']);
+        $lenderCountry = (empty($_POST['lenderCountry']))? "N/A" : cleanInput($_POST['lenderCountry']);
+        $lenderCompany = (empty($_POST['lenderCompany']))? "N/A" : cleanInput($_POST['lenderCompany']);
+        $constructionCountry = (empty($_POST['constructionCountry']))? "N/A" : cleanInput($_POST['constructionCountry']);
+        $constructionCompany = (empty($_POST['constructionCompany']))? "N/A" : cleanInput($_POST['constructionCompany']);
         $country = $_POST['country'];
         $provinceState = cleanInput($_POST['provinceState']);
         $district = cleanInput($_POST['district']);
-        $tributary = cleanInput($_POST['tributary']);
+        $tributary = (empty($_POST['tributary']))? "N/A" : cleanInput($_POST['tributary']);
         $latitude = $_POST['latitude'];
         $longitude = $_POST['longitude'];
-        $proximity = cleanInput($_POST['proximity']);
-        $avgOutput = $_POST['avgOutput'];
+        $proximity = (empty($_POST['proximity']))? "N/A" : cleanInput($_POST['proximity']);
+        $avgOutput = (empty($_POST['source']))? "N/A" : $_POST['avgOutput'];
         $source = cleanInput($_POST['source']);
-        $announcement = cleanInput($_POST['announcement']);
-        $link = cleanInput($_POST['link']);
-        $latestUpdate = cleanInput($_POST['latestUpdate']);
+        $announcement = (empty($_POST['announcement']))? "N/A" : cleanInput($_POST['announcement']);
+        $link = (empty($_POST['capacity']))? "N/A" : cleanInput($_POST['link']);
+        $latestUpdate = (empty($_POST['latestUpdate']))? "N/A" : cleanInput($_POST['latestUpdate']);
 
-        // Check the existence, if yes set $existed = TRUE
-        while (($data = fgetcsv($file)) !== FALSE) {
-            $tmp_id = $data[0];
-            if ($id == $tmp_id) {
-                $existed = TRUE;
-            }
-        }
+
+        $data = array($id,$name,$subtype,$status,$capacity,$year,
+                        $sponsorCountry,$sponsorCompany,$lenderCountry,$lenderCompany,$constructionCountry,$constructionCompany,
+                        $country,$provinceState,$district,$latitude,$longitude,$tributary,$proximity,$avgOutput,$source,$announcement,$link,$latestUpdate);
+        fputcsv($file, $data);
         
-        // If failed return alert to web page
-        if ($existed) {
-            $_SESSION['response']="Failed to insert: Employee with id ".$id." is already existed";
-            $_SESSION['res_type']="danger";
-        }
-        else {
-            $line = array($id,$name,$subtype,$status,$capacity,$year,
-                            $sponsorCountry,$sponsorCompany,$lenderCountry,$lenderCompany,$constructionCountry,$constructionCompany,
-                            $country,$provinceState,$district,$latitude,$longitude,$tributary,$proximity,$avgOutput,$source,$announcement,$link,$latestUpdate);
-            fputcsv($file,$line);
-
-            // Save session status 
-            $_SESSION['response']="Successfully inserted record with id ".$id." to database";
-            $_SESSION['res_type']="success";
-        }
+        // Save session status 
+        $_SESSION['response']="Successfully inserted record with id ".$id." to database";
+        $_SESSION['res_type']="success";
         
         fclose($file);
         // Redirect to index page
@@ -138,71 +123,94 @@
         header('location:home.php');
     }
 
-    // View project detail
-    if (isset($_GET['view'])) {
-        $id = $_GET['view'];
-        
+    // View or Ask for updating information
+    if (isset($_GET['view']) or isset($_GET['update'])) {
+        // Get the request update ID
+        $id = isset($_GET['view']) ? $_GET['view'] : $_GET['update'];
+
+        // Open the file 
+        $file = fopen($FILE_PATH, "r");
+
+        // Loop through file, get the information to display to webpage
+        while (($line = fgetcsv($file)) !== FALSE) {
+            if ($line[0] == $id) {
+                $name = $line[1];
+                $subtype = $line[2];
+                $status = $line[3];
+                $capacity =$line[4]; 
+                $year = $line[5];
+                $sponsorCountry = $line[6];
+                $sponsorCompany = $line[7];
+                $lenderCountry = $line[8];
+                $lenderCompany = $line[9];
+                $constructionCountry = $line[10];
+                $constructionCompany = $line[11];
+                $country = $line[12];
+                $provinceState = $line[13];
+                $district = $line[14];
+                $tributary = $line[15];
+                $latitude = $line[16];
+                $longitude = $line[17];
+                $proximity = $line[18];
+                $avgOutput = $line[19];
+                $source = $line[20];
+                $announcement = $line[21];
+                $link = $line[22];
+                $latestUpdate = $line[23];
+            }
+        }
     }
 
-    // // Ask for updating information
-    // if (isset($_GET['update'])) {
-    //     // Get the request update ID
-    //     $id = $_GET['update'];
+    // Submit updated information
+    if (isset($_POST['update'])) {
+        // Save the new information and put into an array
+        // Collect input data from $_POST
+        $id = $_POST['id'];
+        $name = cleanInput($_POST['name']);
+        $subtype = $_POST['subtype'];
+        $status = $_POST['status'];
+        $capacity = (empty($_POST['capacity']))? "N/A" : $_POST['capacity']; 
+        $year = (empty($_POST['year']))? "N/A" : $_POST['year'];
+        $sponsorCountry = (empty($_POST['sponsorCountry']))? "N/A" : cleanInput($_POST['sponsorCountry']);
+        $sponsorCompany = (empty($_POST['sponsorCompany']))? "N/A" : cleanInput($_POST['sponsorCompany']);
+        $lenderCountry = (empty($_POST['lenderCountry']))? "N/A" : cleanInput($_POST['lenderCountry']);
+        $lenderCompany = (empty($_POST['lenderCompany']))? "N/A" : cleanInput($_POST['lenderCompany']);
+        $constructionCountry = (empty($_POST['constructionCountry']))? "N/A" : cleanInput($_POST['constructionCountry']);
+        $constructionCompany = (empty($_POST['constructionCompany']))? "N/A" : cleanInput($_POST['constructionCompany']);
+        $country = $_POST['country'];
+        $provinceState = cleanInput($_POST['provinceState']);
+        $district = cleanInput($_POST['district']);
+        $tributary = (empty($_POST['tributary']))? "N/A" : cleanInput($_POST['tributary']);
+        $latitude = $_POST['latitude'];
+        $longitude = $_POST['longitude'];
+        $proximity = (empty($_POST['proximity']))? "N/A" : cleanInput($_POST['proximity']);
+        $avgOutput = (empty($_POST['source']))? "N/A" : $_POST['avgOutput'];
+        $source = cleanInput($_POST['source']);
+        $announcement = (empty($_POST['announcement']))? "N/A" : cleanInput($_POST['announcement']);
+        $link = (empty($_POST['capacity']))? "N/A" : cleanInput($_POST['link']);
+        $latestUpdate = (empty($_POST['latestUpdate']))? "N/A" : cleanInput($_POST['latestUpdate']);
 
-    //     // Open the file 
-    //     $file = fopen($FILE_PATH, "r");
 
-    //     // Loop through file, get the information to display to webpage
-    //     while (($line = fgetcsv($file)) !== FALSE) {
-    //         if ($line[0] == $id) {
-    //             $fname = $line[1];
-    //             $lname = $line[2];
-    //             $gender = $line[3];
-    //             $age = $line[4]; 
-    //             $address = $line[5];
-    //             $phone = $line[6];
-    //         }
-    //     }
-    //     $update = true; // Set status to control display (create a button with type='update')
-    // }
+        $new_data = array($id,$name,$subtype,$status,$capacity,$year,
+                        $sponsorCountry,$sponsorCompany,$lenderCountry,$lenderCompany,$constructionCountry,$constructionCompany,
+                        $country,$provinceState,$district,$latitude,$longitude,$tributary,$proximity,$avgOutput,$source,$announcement,$link,$latestUpdate);
+        // echo $id;
+        // Get original data
+        $data = getData($FILE_PATH);
+        // Change the new data
+        $data[$id - 1] = $new_data;
 
-    // // Submit updated information
-    // if (isset($_POST['update'])) {
-    //     // Save the new information and put into an array
-    //     $id = $_POST['id'];
-    //     $fname = $_POST['fname'];
-    //     $lname = $_POST['lname'];
-    //     $gender = $_POST['gender'];
-    //     $age = $_POST['age'];
-    //     $address = $_POST['address'];
-    //     $phone = $_POST['phone'];
-        
-    //     $new_data = array($id,$fname,$lname,$gender,$age,$address,$phone);
-        
-    //     // Open csv file:        
-    //     $infile = fopen($FILE_PATH, "r");
-    //     $data = array();
-        
-    //     // Loop through file
-    //     while (($line = fgetcsv($infile)) !== FALSE) {
-    //         // If the ID not match the current line, push to data array. Else push the new_data to array
-    //         if ($line[0] != $id) {array_push($data,$line);}
-    //         else {array_push($data,$new_data);}
-            
-    //     }
-    //     fclose($infile); // Close the file
+        // Reopen the file and write back the data
+        $outfile = fopen($FILE_PATH, "w");
+        foreach($data as $row) {
+            fputcsv($outfile,$row);
+        }
+        fclose($outfile);
 
-    //     // Reopen the file and write back the data
-    //     $outfile = fopen($FILE_PATH, "w");
-    //     foreach($data as $row) {
-    //         fputcsv($outfile,$row);
-    //     }
-    //     fclose($outfile);
+        // Save session status
+        $_SESSION['response']="Successfully updated record with id ".$id." to database";
+        $_SESSION['res_type']="success";
 
-    //     // Save session status
-    //     $_SESSION['response']="Successfully updated record with id ".$id." to database";
-    //     $_SESSION['res_type']="success";
-
-    //     header('location:index.php');
-    // }
+        header('location:home.php');
+    }
 ?>

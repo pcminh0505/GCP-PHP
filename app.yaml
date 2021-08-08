@@ -2,5 +2,9 @@ runtime: php72
 api_version: 1
 
 handlers:
-  - url: /
-    script: 
+- url: /home.php
+  script: home.php
+- url: /form.php
+  script: form.php
+- url: /action.php
+  script: action.php
