@@ -2,10 +2,6 @@
     include('bootstrap.php'); 
     include 'action.php';
     require_once "config.php";
-
-    if (!isset($_SESSION)) {
-        session_start();
-    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,7 +24,10 @@
             <?php } unset($_SESSION['response']); ?>
         </div>
         <!-- Button trigger to add new project -->
-        <a class="btn btn-success" href="form.php">Add New Project</a>
+        <a class="btn btn-success" href="form.php">Add New Project
+            <i class="fa fa-plus" aria-hidden="true"></i>
+        </a>
+            
         <a class="btn btn-secondary" href="#bottom">Jump to bottom</a>
 
         <!-- Table -->
@@ -59,9 +58,13 @@
                             echo "<td>$line[$col]</td>";
                         } ?>
                         <td>
-                            <a href="form.php?view=<?=$line[0];?>" class="btn btn-primary btn-sm">Details/Update</a>
+                            <a href="form.php?view=<?=$line[0];?>" class="btn btn-primary btn-sm">Details/Update
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </a>
                             <a href="action.php?delete=<?=$line[0];?>" class="btn btn-danger btn-sm"
-                            onclick="return confirm('Do you want to delete this record?');">Delete</a>
+                            onclick="return confirm('Do you want to delete this record?');">Delete
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                            </a>
                         </td>
                         <?php  endwhile; fclose($file); ?>
                 </tr>

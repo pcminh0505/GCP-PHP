@@ -13,7 +13,7 @@ Assignment 1: Google Cloud Platform
 
 -------------------------------------------
 ## Problem 1: CRUD project.csv file with PHP Application
-- Upload and access the CSV file on the bucket: gs//
+- Upload and access the CSV file on the bucket: gs://pcminh-asm1/project.csv
 - Create, Update, Delete methods for project CSV file
 
 ### Action and rules:
