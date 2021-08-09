@@ -1,7 +1,8 @@
 <?php
 
     require_once(__DIR__ . '/vendor/autoload.php');
-
+    
+    use Google\Cloud\BigQuery\BigQueryClient;
     use Google\Cloud\Storage\StorageClient;
 
     # Your Google Cloud Platform project ID
@@ -14,7 +15,7 @@
 
     $storage->registerStreamWrapper();
 
-    // $FILE_PATH = "gs://pcminh-asm1/project.csv";
-    $FILE_PATH = "project.csv";
+    $FILE_PATH = "gs://pcminh-asm1/project.csv";
+    // $FILE_PATH = "project.csv";
     
 ?>

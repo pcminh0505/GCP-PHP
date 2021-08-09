@@ -1,7 +1,7 @@
 <?php
+    require_once('config.php');
     // Initialize session
     session_start();
-    require_once('config.php');
     
     // Some shortcut functions
     // Get whole data to an array
@@ -87,8 +87,8 @@
         
         fclose($file);
         // Redirect to index page
-        header('location:home.php');
-
+        echo "<script>window.location.href='home.php';</script>";
+        // header('location:home.php');
     }
 
     // Delete record
@@ -120,7 +120,7 @@
         $_SESSION['res_type']="danger";
 
         // Redirect to index page
-        header('location:home.php');
+        echo "<script>window.location.href='home.php';</script>";
     }
 
     // View or Ask for updating information
@@ -211,6 +211,6 @@
         $_SESSION['response']="Successfully updated record with id ".$id." to database";
         $_SESSION['res_type']="success";
 
-        header('location:home.php');
+        echo "<script>window.location.href='home.php';</script>";
     }
 ?>

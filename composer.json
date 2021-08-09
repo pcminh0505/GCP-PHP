@@ -3,6 +3,7 @@
     "description": "This is my work for assignment 1 (GCP) for Cloud Computing course",
     "require": {
         "google/cloud-storage": "^1.24",
-        "google/cloud-bigquery": "^1.22"
+        "google/cloud-bigquery": "^1.22",
+        "google/apiclient": "^2.10"
     }
 }
