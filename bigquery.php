@@ -91,14 +91,17 @@
             </thead>
             <tbody>
                 </tr>  
-                    <!-- <?php //  Only show the required information which are: ID, Project Name, Subtype, Current Status,
-                    // Country, Province/State, District, Latitude, Longitude, and Data Source 
-                    foreach($rows as $line) {
-                        echo "<tr>";
-                        foreach($line as $col) {
-                            echo "<td>$line[$col]</td>"; }
-                    } ?> -->
-                </tr>
+                <?php foreach ($rows as $row)
+                {
+                    $str .= "<tr>";
+                    foreach ($row['f'] as $field)
+                    {
+                        $str .= "<td>" . $field['v'] . "</td>";
+                    }
+                    $str .= "</tr>";
+                }
+                ?>
+                <!-- </tr> -->
             </tbody> 
         </table>
         <div class="row">
@@ -114,15 +117,24 @@
             <div class="col-sm"> 
                 <div class="dataTables_paginate paging_simple_numbers" id="employee-table_paginate">
                     <ul class="pagination">
-                        <li class="paginate_button page-item previous disabled" id="employee-table_previous">
+                        <?php for ($i=1; $i <= $lastPage; $i++) {
+                            $class = '';
+                            if ($currentPage == $i) { $class = 'active';}
+                        ?>
+                        <li class="paginate_button page-item <?=$class?>">
+                            <a href="?start=<?=$i?>" class="page-link"><?=$i?></a>
+                        </li>
+                        <?php } ?>    
+                    
+                        <!-- <li class="paginate_button page-item previous disabled" id="employee-table_previous">
                             <a href="#" aria-controls="employee-table" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
                         </li>
                         <li class="paginate_button page-item active">
                             <a href="#" aria-controls="employee-table" data-dt-idx="1" tabindex="0" class="page-link">1</a>
                         </li>
                         <li class="paginate_button page-item next disabled" id="employee-table_next">
-                            <a href="#" aria-controls="employee-table" data-dt-idx="2" tabindex="0" class="page-link">Next</a>
-                        </li>
+                            <a href="#" aria-controls="employee-table" data-dt-idx="2" tabindex="0" class="page-link">Next</a> -->
+                        <!-- </li> -->
                     </ul>
                 </div>
             </div>

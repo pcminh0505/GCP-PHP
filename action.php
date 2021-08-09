@@ -1,7 +1,6 @@
 <?php
     require_once('config.php');
-    // Initialize session
-    session_start();
+
     
     // Some shortcut functions
     // Get whole data to an array

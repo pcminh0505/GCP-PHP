@@ -1,6 +1,7 @@
 <?php 
     include 'action.php';
     require_once "config.php";
+    session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
