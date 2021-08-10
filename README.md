@@ -1,17 +1,27 @@
-COSC2638 - Cloud Computing
+* COSC2638 - Cloud Computing
 
-RMIT University
+* RMIT University
 
-Student name: Pham Cong Minh
+* Student name: Pham Cong Minh
 
-Student ID: s3818102
+* Student ID: s3818102
 
-Assignment 1: Google Cloud Platform
+* Assignment 1: Google Cloud Platform
 
 ---
 
 ## Deployed Link:
 
+---
+Installation
+To begin, install the preferred dependency manager for PHP, [Composer](https://getcomposer.org/).
+
+Now to install just this component:
+```
+composer install google/cloud-storage
+composer installgoogle/cloud-bigquery
+composer installgoogle/apiclient
+```
 ---
 
 ## Problem 1: CRUD project.csv file with PHP Application
@@ -39,7 +49,7 @@ Assignment 1: Google Cloud Platform
 - home.php: Home page display task 1 first
 - action.php: Include all the CRUD method in one file
 - form.php: Form view for add, view detail, and edit information
-- config.php: Store projectID and google cloud storage
+- config.php: Store projectID and path to Google Service
 
 ---
 
