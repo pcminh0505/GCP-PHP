@@ -1,12 +1,12 @@
-*COSC2638 - Cloud Computing
+**COSC2638 - Cloud Computing**
 
-*RMIT University
+**RMIT University**
 
-*Student name: Pham Cong Minh
+**Student name: Pham Cong Minh**
 
-*Student ID: s3818102
+**Student ID: s3818102**
 
-*Assignment 1: Google Cloud Platform
+**Assignment 1: Google Cloud Platform**
 
 ---
 
