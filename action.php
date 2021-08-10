@@ -77,16 +77,17 @@
 
         $data = array($id,$name,$subtype,$status,$capacity,$year,
                         $sponsorCountry,$sponsorCompany,$lenderCountry,$lenderCompany,$constructionCountry,$constructionCompany,
-                        $country,$provinceState,$district,$latitude,$longitude,$tributary,$proximity,$avgOutput,$source,$announcement,$link,$latestUpdate);
+                        $country,$provinceState,$district,$tributary,$latitude,$longitude,$proximity,$avgOutput,$source,$announcement,$link,$latestUpdate);
         fputcsv($file, $data);
         
-        // Save session status 
-        $_SESSION['response']="Successfully inserted record with id ".$id." to database";
-        $_SESSION['res_type']="success";
+        // // Save session status 
+        // $_SESSION['response']="Successfully inserted record with id ".$id." to database";
+        // $_SESSION['res_type']="success";
         
         fclose($file);
         // Redirect to index page
-        echo "<script>window.location.href='home.php';</script>";
+        echo "<script>alert('Create new employee with $id successfully');</script>";
+        echo "<script>window.location.href='home';</script>";
         // header('location:home.php');
     }
 
@@ -114,12 +115,13 @@
         }
         fclose($outfile);
 
-        // Save session status
-        $_SESSION['response']="Successfully deleted record with id ".$id." from database";
-        $_SESSION['res_type']="danger";
+        // // Save session status
+        // $_SESSION['response']="Successfully deleted record with id ".$id." from database";
+        // $_SESSION['res_type']="danger";
 
         // Redirect to index page
-        echo "<script>window.location.href='home.php';</script>";
+        echo "<script>alert('Delete employee with $id successfully!');</script>";
+        echo "<script>window.location.href='home';</script>";
     }
 
     // View or Ask for updating information
@@ -206,10 +208,11 @@
         }
         fclose($outfile);
 
-        // Save session status
-        $_SESSION['response']="Successfully updated record with id ".$id." to database";
-        $_SESSION['res_type']="success";
+        // // Save session status
+        // $_SESSION['response']="Successfully updated record with id ".$id." to database";
+        // $_SESSION['res_type']="success";
 
-        echo "<script>window.location.href='home.php';</script>";
+        echo "<script>alert('Edit employee with $id successfully');</script>";
+        echo "<script>window.location.href='home';</script>";
     }
 ?>

@@ -7,17 +7,20 @@ switch (@parse_url($_SERVER['REQUEST_URI'])['path']) {
     case '/':
         require 'home.php';
         break;
-    case '/home.php':
+    case '/home':
         require 'home.php';
         break;
-    case '/form.php':
+    case '/form':
         require 'form.php';
         break;
     case '/action.php':
         require 'action.php';
         break;
-    case '/bigquery.php':
+    case '/bigquery':
         require 'bigquery.php';
+        break;
+    case '/search.php':
+        require 'search.php';
         break;
     default:
         http_response_code(404);

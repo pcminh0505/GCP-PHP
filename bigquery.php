@@ -1,5 +1,6 @@
 <?php 
     include 'search.php';
+    // include 'action.php';
     require_once "config.php";
 ?>
 <!DOCTYPE html>
@@ -35,10 +36,10 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-            <a class="nav-link" href="home.php">Project Management</a>
+            <a class="nav-link" href="home">Project Management</a>
         </li>
         <li class="nav-item active">
-            <a class="nav-link" href="bigquery.php">Project BigQuery<span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="bigquery">Project BigQuery<span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#">Additional App</a>
@@ -57,7 +58,7 @@
         <div class="row">
             <div class="col-md-9 mb-3">
                 Displaying projects from
-                <select class="custom-select" name=country required style="max-width: 200px">
+                <select class="custom-select" name="country" required style="max-width: 200px">
                     <option value selected>All Countries</option> 
                     <option value="Vietnam">Vietnam</option>
                     <option value="Thailand">Thailand</option>
@@ -87,59 +88,73 @@
                     <th>District</th>
                     <th>Latitude</th>
                     <th>Longitude</th>
+                    <!-- <th>More Details</th> -->
                 </tr>
             </thead>
             <tbody>
                 </tr>  
-                <?php foreach ($rows as $row)
-                {
-                    $str .= "<tr>";
-                    foreach ($row['f'] as $field)
-                    {
-                        $str .= "<td>" . $field['v'] . "</td>";
-                    }
-                    $str .= "</tr>";
-                }
-                ?>
-                <!-- </tr> -->
+                    <?php foreach ($rows as $row) {
+                    echo "<tr>";
+                    foreach ($row['f'] as $field) {
+                        echo "<td>".$field['v']."</td>";
+                    } ?>
+                    <?php } echo "<tr>";?>
             </tbody> 
         </table>
         <div class="row">
-            <div class="col-sm">
-                <div class="input-group" style="max-width: 200px">
-                    <input type="number" name="pageSize" class="form-control" value="10" placeholder="Enter page limit (Default: 10)">
-                    <button class="btn btn-primary" type="submit" name="pageSize">Set page size</button>
-                </div> 
-            </div>  
-            <div class="col-sm justify-content-center">
-                Showing entities 
-            </div>  
             <div class="col-sm"> 
-                <div class="dataTables_paginate paging_simple_numbers" id="employee-table_paginate">
-                    <ul class="pagination">
-                        <?php for ($i=1; $i <= $lastPage; $i++) {
-                            $class = '';
-                            if ($currentPage == $i) { $class = 'active';}
-                        ?>
-                        <li class="paginate_button page-item <?=$class?>">
-                            <a href="?start=<?=$i?>" class="page-link"><?=$i?></a>
-                        </li>
-                        <?php } ?>    
-                    
-                        <!-- <li class="paginate_button page-item previous disabled" id="employee-table_previous">
-                            <a href="#" aria-controls="employee-table" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
-                        </li>
-                        <li class="paginate_button page-item active">
-                            <a href="#" aria-controls="employee-table" data-dt-idx="1" tabindex="0" class="page-link">1</a>
-                        </li>
-                        <li class="paginate_button page-item next disabled" id="employee-table_next">
-                            <a href="#" aria-controls="employee-table" data-dt-idx="2" tabindex="0" class="page-link">Next</a> -->
-                        <!-- </li> -->
-                    </ul>
-                </div>
+                <form method="GET">
+                    <div class="input-group">
+                        <input type="number" min="10" name="limit" class="form-control" value="<?=$limit?>" placeholder="Default: 10" style="max-width:150px">
+                        <button button class="btn btn-primary" type="submit">Set page size</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm"> 
+                <ul class="pagination" style="justify-content: flex:end">
+                    <li class="page-item <?=$page==1 ? 'disabled' : '';?>"><a class="page-link" href="?page=<?=$Previous?>&limit=<?=$limit?>">Previous</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1&limit=<?=$limit?>">1</a>
+                    </li> 
+                    <?php 
+                    $superset_range = range(2,$lastPage-1);
+                    $subset_range = range($page - 1, $page + 1);
+                    // adjust the range(if required)
+                    foreach($subset_range as $p){
+                        if($p < 1){
+                            array_shift($subset_range);
+                            if(in_array($subset_range[count($subset_range) - 1] + 1, $superset_range)){
+                                $subset_range[] = $subset_range[count($subset_range) - 1] + 1;
+                            }
+                        }elseif($p > $lastPage-1){
+                            array_pop($subset_range);
+                            if(in_array($subset_range[0] - 1, $superset_range)){
+                                array_unshift($subset_range, $subset_range[0] - 1);
+                            }
+                        }
+                    }
+                    // display intermediate pagination links
+                    if($subset_range[0] > $superset_range[0]){
+                        echo " ... &nbsp;";
+                    }
+                    foreach($subset_range as $p){
+                        $class = '';
+                        if ($currentPage == $p) { $class = 'active';}
+                        echo "<li class='paginate_button page-item $class'><a href='?page=$p&limit=$limit' class='page-link'>$p</a></li>";
+                    }
+                    if($subset_range[count($subset_range) - 1] < $superset_range[count($superset_range) - 1]){
+                        echo "&nbsp; ... ";
+                    }
+                    ?>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<?=$lastPage?>&limit=<?=$limit?>"><?=$lastPage?></a>
+                    </li> 
+                    <li class="page-item <?=$page==$lastPage ? 'disabled' : '';?>"><a class="page-link" href="?page=<?=$Next?>&limit=<?=$limit?>">Next</a></li> 
+                </ul>
             </div>
         </div>
     </div>
+</script>
 </body>
 
 </html>

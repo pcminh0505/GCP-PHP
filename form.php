@@ -35,10 +35,10 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
         <li class="nav-item active">
-            <a class="nav-link" href="home.php">Project Management<span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="home">Project Management<span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="bigquery.php">Project BigQuery</a>
+            <a class="nav-link" href="bigquery">Project BigQuery</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#">Additional App</a>
@@ -222,13 +222,13 @@
         </div>
         <div class="form-group row">
             <div class="col-sm-6 mx-auto">
-                <a href="home.php" class="btn btn-block btn-warning">Cancel</a>
+                <a href="home" class="btn btn-block btn-warning">Cancel</a>
             </div>
             <div class="col-sm-6 mx-auto">
                 <?php if (isset($_GET['update'])) { ?>
                     <button type='submit' name='update' class='btn btn-primary btn-block'>Confirm</button>
                 <?php } else if (isset($_GET['view'])) { ?>
-                    <a href='form.php?update=<?=$id;?>' class='btn btn-primary btn-block'>Update</a>
+                    <a href='form?update=<?=$id;?>' class='btn btn-primary btn-block'>Update</a>
                 <?php } else echo "<button type='submit' name='add' class='btn btn-success btn-block'> Submit </button>"; ?>
                 
             </div>

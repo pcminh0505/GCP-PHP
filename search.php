@@ -8,30 +8,26 @@
     $projectId = 's3818102-asm1';
 
     $request = new Google_Service_Bigquery_QueryRequest();
-    $str = '';
-    $sql = "";
-
-    $pageSize = isset($_POST['pageSize']) ? $_POST['pageSize'] : 10;
-    $DATA_COUNT = 1808;
-    $lastPage = ceil($DATA_COUNT / $pageSize);
-
-    $start = 0;
-    $currentPage = 1;
-    if (isset($_GET['start'])) {
-        $start = $_GET['start'];
-        $currentPage = $start;
-        $start--;
-        $start *= $pageSize;
-    }
 
     $columns = "ID,Name,Subtype,Status,Country,ProvinceState,District,Latitude,Longitude";
-    $where = "";
+    $DATA_COUNT = 1808;
+    $start = 0;
+    $currentPage = 1;
 
+    $limit = isset($_GET['limit']) ? $_GET['limit'] : 10;
+    if (isset($_GET['page'])) {
+        $page = $_GET['page'];
+        $currentPage = $page;
+        $start = ($page - 1) * $limit;
+    } else {$page = 1;}
 
-    $request->setQuery("SELECT $columns FROM [pcminh_asm1.mekongproject] LIMIT $pageSize OFFSET $start");
+    $Previous = $page - 1;
+    $Next = $page + 1;
+
+    $lastPage = ceil($DATA_COUNT / $limit);
+    $request->setQuery("SELECT $columns FROM [pcminh_asm1.mekongproject] ORDER BY ID LIMIT $limit OFFSET $start");
     
     $response = $bigquery->jobs->query($projectId, $request);
     $rows = $response->getRows();
-
-
+    
 ?>

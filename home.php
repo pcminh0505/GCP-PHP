@@ -1,7 +1,7 @@
 <?php 
     include 'action.php';
     require_once "config.php";
-    session_start();
+    // session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,10 +36,10 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
         <li class="nav-item active">
-            <a class="nav-link" href="home.php">Project Management<span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="home">Project Management<span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="bigquery.php">Project BigQuery</a>
+            <a class="nav-link" href="bigquery">Project BigQuery</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#">Additional App</a>
@@ -54,16 +54,8 @@
         <div class="row justify-content-center">
             <h2 class="text-center text-dark">Mekong Infrastructure Tracker (Original Data)</h2>
         </div>
-        <div class="row justify-content-center">
-            <?php if (isset($_SESSION['response'])) { ?>
-            <div class="alert alert-<?= $_SESSION['res_type']; ?> alert-dismissible text-center">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                <b><?= $_SESSION['response']; ?></b>
-            </div>
-            <?php } unset($_SESSION['response']); ?>
-        </div>
         <!-- Button trigger to add new project -->
-        <a class="btn btn-success" href="form.php">Add New Project
+        <a class="btn btn-success" href="form">Add New Project
             <i class="fa fa-plus" aria-hidden="true"></i>
         </a>
             
@@ -97,7 +89,7 @@
                             echo "<td>$line[$col]</td>";
                         } ?>
                         <td>
-                            <a href="form.php?view=<?=$line[0];?>" class="btn btn-primary btn-sm">Details/Update
+                            <a href="form?view=<?=$line[0];?>" class="btn btn-primary btn-sm">Details/Update
                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             </a>
                             <a href="action.php?delete=<?=$line[0];?>" class="btn btn-danger btn-sm"
