@@ -10,7 +10,7 @@
 
 ---
 
-## Deployed Link: [s3818102-asm1.as.r.appspot.com](s3818102-asm1.as.r.appspot.com)
+## Deployed Link: [s3818102-asm1.as.r.appspot.com](https://s3818102-asm1.as.r.appspot.com)
 
 ---
 
@@ -68,7 +68,6 @@ composer install google/apiclient
 #### File Management:
 
 - `bigquery.php`: Display page for BigQuery task
-- `search.php`: Action control for BigQuery task
 
 ---
 
