@@ -51,7 +51,7 @@ $bigquery = new Google_Service_Bigquery($client);
 $request = new Google_Service_Bigquery_QueryRequest();
 
 // Send query request to Google BigQuery and store API response in $rows
-$request->setQuery("SELECT $columns FROM $dataset $where LIMIT $limit OFFSET $start");
+$request->setQuery("SELECT $columns FROM $dataset $where ORDER BY listened_at DESC LIMIT $limit OFFSET $start");
 
 $response = $bigquery->jobs->query($projectId, $request);
 $rows = $response->getRows();
@@ -114,9 +114,9 @@ $rows = $response->getRows();
                         <i class="fa fa-arrow-left" aria-hidden="true"></i>
                     </a>
                 </div>
-                <div class="col-sm" style="justify-content:flex-end">
+                <div class="col-sm" style="display: flex; justify-content:flex-end">
                     <!-- Button trigger to add new project -->
-                    <div class="input-group">
+                    <div class="input-group" style="display: flex; justify-content:flex-end">
                         <!-- Display text -->
                         <div class="input-group-prepend">
                             <span class="input-group-text">Search</span>
@@ -160,8 +160,6 @@ $rows = $response->getRows();
                             if ($isDate) {
                                 echo "<td>" . date("Y-m-d H:i:s", $field['v']) . "</td>";
                                 $isDate = false;
-                            } else if (empty($field['v'])) {
-                                echo "<td>" . " " . "</td>";
                             } else {
                                 echo "<td>" . $field['v'] . "</td>";
                             }
@@ -179,15 +177,18 @@ $rows = $response->getRows();
                         <button button class="btn btn-primary" type="submit">Set page size</button>
                     </div>
                 </div>
+                <div class="col-sm" , style="display: flex; justify-content: center">
+                    <small class="text-danger fst-italic"> Only can query up to page 1000 due to VM incapability with large dataset.</small>
+                </div>
                 <!-- Pagination  -->
                 <div class="col-sm" , style="display: flex; justify-content:flex-end">
                     <ul class="pagination">
                         <!-- If current page is 1 -> Disable "Previous" button -->
-                        <li class="page-item <?= $page == 1 ? 'disabled' : ''; ?>"><a class="page-link" href="?countrybq=<?= $countrybq ?>&namebq=<?= $namebq ?>&page=<?= $Previous ?>&limit=<?= $limit ?>">Previous</a></li>
+                        <li class="page-item <?= $page == 1 ? 'disabled' : ''; ?>"><a class="page-link" href="?page=<?= $Previous ?>&limit=<?= $limit ?>">Previous</a></li>
                         <!-- If current page exceed the given range (+-1) -> Show the first page 1 -->
                         <?php if ($page >= 3) { ?>
                             <li class="page-item">
-                                <a class="page-link" href="?countrybq=<?= $countrybq ?>&namebq=<?= $namebq ?>&page=1&limit=<?= $limit ?>">1</a>
+                                <a class="page-link" href="?page=1&limit=<?= $limit ?>">1</a>
                             </li>
                         <? } ?>
                         <?php
@@ -217,7 +218,7 @@ $rows = $response->getRows();
                             if ($currentPage == $p) {
                                 $class = 'active';
                             }
-                            echo "<li class='paginate_button page-item $class'><a href='?countrybq=$countrybq&namebq=$namebq&page=$p&limit=$limit' class='page-link'>$p</a></li>";
+                            echo "<li class='paginate_button page-item $class'><a href='?page=$p&limit=$limit' class='page-link'>$p</a></li>";
                         }
                         if ($subset_range[count($subset_range) - 1] < $superset_range[count($superset_range) - 1]) {
                             echo "&nbsp; ... ";
@@ -225,11 +226,11 @@ $rows = $response->getRows();
                         ?>
                         <!-- Show the last page with active stage -->
                         <li class="paginate_button page-item <?= $page == $lastPage ? 'active' : ''; ?>">
-                            <a class="page-link" href="?countrybq=<?= $countrybq ?>&namebq=<?= $namebq ?>&page=<?= $lastPage ?>&limit=<?= $limit ?>"><?= $lastPage ?></a>
+                            <a class="page-link" href="?page=<?= $lastPage ?>&limit=<?= $limit ?>"><?= $lastPage ?></a>
                         </li>
                         <!-- If current page is the last page -> Disable "Next" button -->
                         <li class="page-item <?= $page == $lastPage ? 'disabled' : ''; ?>">
-                            <a class="page-link" href="?countrybq=<?= $countrybq ?>&namebq=<?= $namebq ?>&page=<?= $Next ?>&limit=<?= $limit ?>">Next</a>
+                            <a class="page-link" href="?page=<?= $Next ?>&limit=<?= $limit ?>">Next</a>
                         </li>
                     </ul>
                 </div>

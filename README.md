@@ -18,7 +18,7 @@
 
 To begin, install the preferred dependency manager for PHP, [Composer](https://getcomposer.org/).
 
-Now to install just this component:
+Now to install just these components:
 
 ```
 composer require google/cloud-storage
@@ -30,10 +30,10 @@ composer require google/apiclient
 
 ## Problem 1: CRUD project.csv file with PHP Application
 
+#### Features:
+
 - Upload and access the CSV file on the bucket: [gs://pcminh-asm1/project.csv](#)
 - Create, Update, Delete methods for project CSV file
-
-### Notes:
 
 #### Data cleaning technique:
 
@@ -54,10 +54,13 @@ composer require google/apiclient
 - `action.php`: Include all the CRUD method in one file
 - `form.php`: Form view for add, view detail, and edit information
 - `config.php`: Store projectID and path to Google Service
+- `function.php`: Store reusable function for both problem 1 and 2
 
 ---
 
 ## Problem 2: Query project.csv file with Google Big Query (GBQ)
+
+#### Features:
 
 - Upload and access the CSV file on GBQ.
 - Display all the project information.
@@ -72,3 +75,16 @@ composer require google/apiclient
 ---
 
 ## Problem 3: Customized app with public dataset
+
+#### Dataset: [Time Series Music Metadata: ListenBrainz](https://console.cloud.google.com/marketplace/product/metabrainz/listenbrainz)
+
+#### Features:
+
+- Display table with `timestamp`, `username`, `artist`,`album`,`song`,`tag`.
+- Able to search the name of Artist / Album / Song / Tags.
+- Report dashboard
+
+#### File management:
+
+- `dashboard.php`: Show figure report
+- `listenbrainz.php`: Show query table
