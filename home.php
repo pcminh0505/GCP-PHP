@@ -1,7 +1,6 @@
 <?php
 include 'action.php';
 require_once "config.php";
-// session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,7 +41,7 @@ require_once "config.php";
                 <a class="nav-link" href="bigquery">Project BigQuery</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Additional App</a>
+                <a class="nav-link" href="dashboard">Additional App</a>
             </li>
         </ul>
     </div>
@@ -62,7 +61,7 @@ require_once "config.php";
         <a class="btn btn-secondary" href="#bottom">Jump to bottom</a>
 
         <!-- Table -->
-        <table class="table table-bordered" id="header-fixed">
+        <table class="table table-bordered table-striped table-hover" id="header-fixed">
             <thead class="table-info">
                 <tr>
                     <th>ID</th>
@@ -101,6 +100,7 @@ require_once "config.php";
                 </tr>
             </tbody>
         </table>
+        <!-- Footer -->
         <label id="bottom">End of page</label>
         <a class="btn btn-secondary" href="#top">Jump to top</a>
     </div>

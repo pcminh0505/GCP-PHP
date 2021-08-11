@@ -21,9 +21,9 @@ To begin, install the preferred dependency manager for PHP, [Composer](https://g
 Now to install just this component:
 
 ```
-composer install google/cloud-storage
-composer install google/cloud-bigquery
-composer install google/apiclient
+composer require google/cloud-storage
+composer require google/cloud-bigquery
+composer require google/apiclient
 ```
 
 ---

@@ -2,17 +2,6 @@
 include 'config.php';
 require_once('function.php');
 
-// Initialize Google Client & Google BigQuery
-$client = new Google_Client();
-$client->useApplicationDefaultCredentials();
-$client->addScope(Google_Service_Bigquery::BIGQUERY);
-$bigquery = new Google_Service_Bigquery($client);
-$projectId = 's3818102-asm1';
-$dataset = "[pcminh_asm1.mekongproject]";
-$request = new Google_Service_Bigquery_QueryRequest();
-
-// Only select the required fields
-$columns = "ID,Name,Subtype,Status,Country,ProvinceState,District,Latitude,Longitude";
 $start = 0; // Initialize variable for OFFSET while querying
 $currentPage = 1; // Variable to keep track of current page (for 'active' displaying)
 
@@ -34,30 +23,40 @@ $Next = $page + 1;
 
 $where = ""; // Initialize the condition while query
 // Get the filter variable for "country" and "name"
-$countrybq = isset($_GET['countrybq']) ? $_GET['countrybq'] : '';
-$namebq = isset($_GET['namebq']) ? $_GET['namebq'] : '';
+$LBtype = isset($_GET['LBtype']) ? $_GET['LBtype'] : '';
+$LBname = isset($_GET['LBname']) ? $_GET['LBname'] : '';
 
-// Set the condition based on value input from "country" and "name"
-if (!empty($countrybq) and !empty($namebq)) {
-    $where = "WHERE Name LIKE '%$namebq%' AND Country = '$countrybq'";
-} elseif (!empty($_GET['countrybq']) and empty($_GET['namebq'])) {
-    $where = "WHERE Country = '$countrybq'";
-} elseif (!empty($_GET['namebq']) and empty($_GET['countrybq'])) {
-    $where = "WHERE Name LIKE '%$namebq%'";
+$dict = array("Artist" => "artist_name", "Album" => "release_name", "Song" => "track_name", "Tags" => "tags");
+// Set the condition based on value input from "type" and "name"
+if (!empty($LBtype) and !empty($LBname)) {
+    $where = "WHERE $dict[$LBtype] LIKE '%$LBname%' ";
 }
 
-// Get total number of rows from query with condition
-$DATA_COUNT = getTotalRows($where, $dataset);
+// Get total number of rows 
+$DATA_COUNT = 146914257;
 
 // Calculate the last page value
 $lastPage = ceil($DATA_COUNT / $limit);
 
+/** Uncomment and populate these variables in your code */
+$projectId = 's3818102-asm1';
+$dataset = 'listenbrainz.listenbrainz.listen';
+// Select important columns
+$columns = "listened_at,user_name,artist_name,release_name,track_name,tags";
+
+$client = new Google_Client();
+$client->useApplicationDefaultCredentials();
+$client->addScope(Google_Service_Bigquery::BIGQUERY);
+$bigquery = new Google_Service_Bigquery($client);
+$request = new Google_Service_Bigquery_QueryRequest();
+
 // Send query request to Google BigQuery and store API response in $rows
-$request->setQuery("SELECT $columns FROM [pcminh_asm1.mekongproject] $where ORDER BY ID LIMIT $limit OFFSET $start");
+$request->setQuery("SELECT $columns FROM $dataset $where LIMIT $limit OFFSET $start");
 
 $response = $bigquery->jobs->query($projectId, $request);
 $rows = $response->getRows();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -65,7 +64,7 @@ $rows = $response->getRows();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BigQuery Mekong Project</title>
+    <title>ListenBrainz Dataset</title>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -79,9 +78,8 @@ $rows = $response->getRows();
 </head>
 
 <header>
-    <link rel="stylesheet" href="css/table.css" />
+    <!-- <link rel="stylesheet" href="css/table.css"/> -->
 </header>
-
 <!-- NAVAGATION -->
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top ">
     <a class="navbar-brand" href="#">COSC2638 - Assignment 1</a>
@@ -93,11 +91,11 @@ $rows = $response->getRows();
             <li class="nav-item">
                 <a class="nav-link" href="home">Project Management</a>
             </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="bigquery">Project BigQuery<span class="sr-only">(current)</span></a>
-            </li>
             <li class="nav-item">
-                <a class="nav-link" href="dashboard">Additional App</a>
+                <a class="nav-link" href="bigquery">Project BigQuery</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="dashboard">Additional App<span class="sr-only">(current)</span></a>
             </li>
         </ul>
     </div>
@@ -108,63 +106,66 @@ $rows = $response->getRows();
     <div class="container-fluid">
         <form method="GET" action="#">
             <div class="row justify-content-center">
-                <h2 class="text-center text-dark">Mekong Infrastructure Tracker (Search & Filter)</h2>
+                <h2 class="text-center text-dark">ListenBrainz Data (Search & Filter)</h2>
             </div>
-            <!-- Button trigger to add new project -->
-            <div class="input-group">
-                <!-- Display text -->
-                <div class="input-group-prepend">
-                    <span class="input-group-text">Displaying projects from</span>
+            <div class="row">
+                <div class="col-sm">
+                    <a href="javascript:history.go(-1)" class="btn btn-warning">Back
+                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    </a>
                 </div>
-                <!-- Dropdown box for selecting country -->
-                <div class="input-group-prepend">
-                    <select class="custom-select" name="countrybq" style="max-width: 200px">
-                        <option value selected>All Countries</option>
-                        <?php foreach (["Vietnam", "Thailand", "Laos", "Myanmar", "Cambodia", "China"] as $country) : ?>
-                            <option <?php if (isset($_GET["countrybq"]) && $_GET["countrybq"] == $country) echo "selected" ?> value="<?= $country; ?>"><?= $country; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                <!-- Input box for project name -->
-                <input class="form-control" name="namebq" type="text" value="<?= $namebq ?>" placeholder="Search Project Name" style="max-width:3800px;">
-                <div class="input-group-append">
-                    <button class="btn btn-primary" type="submit">Search</button>
+                <div class="col-sm" style="justify-content:flex-end">
+                    <!-- Button trigger to add new project -->
+                    <div class="input-group">
+                        <!-- Display text -->
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Search</span>
+                        </div>
+                        <!-- Dropdown box for selecting country -->
+                        <div class="input-group-prepend">
+                            <select class="custom-select" name="LBtype" required>
+                                <option value selected>All</option>
+                                <?php foreach (["Artist", "Album", "Song", "Tags"] as $value) : ?>
+                                    <option <?php if (isset($_GET["type"]) && $_GET["type"] == $value) echo "selected" ?> value="<?= $value; ?>"><?= $value; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <!-- Input box for project name -->
+                        <input class="form-control" name="LBname" type="text" value="<?= $LBname ?>" placeholder="Enter name: " style="max-width: 300px;">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">Search
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- Table -->
             <table class="table table-bordered table-striped table-hover" id="header-fixed">
                 <thead class="table-info">
                     <tr>
-                        <th>ID</th>
-                        <th>Project Name</th>
-                        <th>Subtype</th>
-                        <th>Current Status</th>
-                        <th>Country</th>
-                        <th>Province/State</th>
-                        <th>District</th>
-                        <th>Latitude</th>
-                        <th>Longitude</th>
-                        <th>More Details</th>
+                        <th>Time</th>
+                        <th>User Name</th>
+                        <th>Artist</th>
+                        <th>Album</th>
+                        <th>Song</th>
+                        <th>Tags</th>
                     </tr>
                 </thead>
                 <tbody>
-                    </tr>
                     <?php foreach ($rows as $row) :
                         echo "<tr>";
-                        $tmp = 0;
-                        $id = 0;
+                        $isDate = true;
                         foreach ($row['f'] as $field) {
-                            echo "<td>" . $field['v'] . "</td>";
-                            if ($tmp == 0) {
-                                $id = $field['v'];
+                            if ($isDate) {
+                                echo "<td>" . date("Y-m-d H:i:s", $field['v']) . "</td>";
+                                $isDate = false;
+                            } else if (empty($field['v'])) {
+                                echo "<td>" . " " . "</td>";
+                            } else {
+                                echo "<td>" . $field['v'] . "</td>";
                             }
-                            $tmp++;
                         } ?>
-                        <td>
-                            <a href="form?viewbq=<?= $id; ?>" class="btn btn-warning btn-sm">Details
-                                <i class="fa fa-info-circle" aria-hidden="true"></i>
-                            </a>
-                        </td>
                     <?php endforeach;
                     echo "<tr>"; ?>
                 </tbody>

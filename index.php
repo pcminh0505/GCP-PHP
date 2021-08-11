@@ -21,9 +21,12 @@
         case '/bigquery':
             require 'bigquery.php';
             break;
-            // case '/search':
-            //     require 'search.php';
-            //     break;
+        case '/dashboard':
+            require 'dashboard.php';
+            break;
+        case '/listenbrainz':
+            require 'listenbrainz.php';
+            break;
         default:
             http_response_code(404);
             exit('Not Found');

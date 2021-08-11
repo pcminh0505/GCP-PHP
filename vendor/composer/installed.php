@@ -1,11 +1,11 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '39f354d71c8f104fa96066720eb425c5dbf60e9c',
+        'reference' => '5ae72f87649bb075e607e680a11c85d5e39d5679',
         'name' => 'minhpham/s3818102_asm1',
         'dev' => true,
     ),
@@ -119,12 +119,12 @@
             'dev_requirement' => false,
         ),
         'minhpham/s3818102_asm1' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '39f354d71c8f104fa96066720eb425c5dbf60e9c',
+            'reference' => '5ae72f87649bb075e607e680a11c85d5e39d5679',
             'dev_requirement' => false,
         ),
         'monolog/monolog' => array(
