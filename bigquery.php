@@ -9,6 +9,7 @@ $client->addScope(Google_Service_Bigquery::BIGQUERY);
 $bigquery = new Google_Service_Bigquery($client);
 $projectId = 's3818102-asm1';
 $dataset = "[pcminh_asm1.mekongproject]";
+$tbname = "s3818102-asm1.pcminh_asm1.mekongproject";
 $request = new Google_Service_Bigquery_QueryRequest();
 
 // Only select the required fields
@@ -36,18 +37,18 @@ $where = ""; // Initialize the condition while query
 // Get the filter variable for "country" and "name"
 $countrybq = isset($_GET['countrybq']) ? $_GET['countrybq'] : '';
 $namebq = isset($_GET['namebq']) ? $_GET['namebq'] : '';
-
+$namelower = strtolower($namebq);
 // Set the condition based on value input from "country" and "name"
 if (!empty($countrybq) and !empty($namebq)) {
-    $where = "WHERE Name LIKE '%$namebq%' AND Country = '$countrybq'";
+    $where = "WHERE LOWER(Name) LIKE '%$namelower%' AND Country = '$countrybq'";
 } elseif (!empty($_GET['countrybq']) and empty($_GET['namebq'])) {
     $where = "WHERE Country = '$countrybq'";
 } elseif (!empty($_GET['namebq']) and empty($_GET['countrybq'])) {
-    $where = "WHERE Name LIKE '%$namebq%'";
+    $where = "WHERE LOWER(Name) LIKE '%$namelower%'";
 }
 
 // Get total number of rows from query with condition
-$DATA_COUNT = getTotalRows($where, $dataset);
+$DATA_COUNT = getTotalRows($where, $tbname);
 
 // Calculate the last page value
 $lastPage = ceil($DATA_COUNT / $limit);
@@ -148,7 +149,7 @@ $rows = $response->getRows();
                     </tr>
                 </thead>
                 <tbody>
-                    </tr>
+                    <?php if ($lastPage == 0) echo "<span class='badge badge-pill badge-danger'>No data found</span>" ?>
                     <?php foreach ($rows as $row) :
                         echo "<tr>";
                         $tmp = 0;

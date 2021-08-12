@@ -60,6 +60,8 @@ composer require google/apiclient
 
 ## Problem 2: Query project.csv file with Google Big Query (GBQ)
 
+This problem using BigQuery via Google Client API so that some command and syntax are different from [docs](https://cloud.google.com/bigquery/docs/reference/libraries)
+
 #### Features:
 
 - Upload and access the CSV file on GBQ.
@@ -83,8 +85,10 @@ composer require google/apiclient
 - Display table with `timestamp`, `username`, `artist`,`album`,`song`,`tag`.
 - Able to search the name of Artist / Album / Song / Tags.
 - Report dashboard
+- Search tops 10 song by artist
 
 #### File management:
 
+- `query.php`: PHP script for querying data
 - `dashboard.php`: Show figure report
 - `listenbrainz.php`: Show query table

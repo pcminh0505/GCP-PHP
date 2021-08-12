@@ -54,13 +54,27 @@ include "query.php";
         <div class="row justify-content-center">
             <h2 class="text-center text-dark">ListenBrainz Visualization</h2>
         </div>
+        <div class="row justify-content-center">
+            <small class="text-info fst-italic">Last update: <?= $last ?></small>
+        </div>
+        <div class="row">
+            <div class="col-md" style="display:flex; justify-content:flex-start">
+                <a class="btn btn-primary" href="https://console.cloud.google.com/marketplace/product/metabrainz/listenbrainz">Original Description</a>
+                <a class="btn btn-success" href="https://www.kaggle.com/yasmeenhany/listenbrainz-visualization/notebook">Query Reference</a>
+            </div>
+            <div class="col-md" style="display:flex; justify-content:flex-end">
+                <a class="btn btn-success" href="listenbrainz">Go to dataset
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
         <hr>
         <div class="row">
             <div class="col-md-4">
                 <div class="card border-secondary mb-3 text-center">
-                    <h5 class="card-header" style="justify-content: center">Top Played Artist</h5>
+                    <h5 class="card-header" style="justify-content: center">Top Played Artist (All time)</h5>
                     <div class="card-body">
-                        <canvas id="topArtist" width="600" height="300" style="display: block; box-sizing: border-box; height: 301px; width: 602px;"></canvas>
+                        <canvas id="topArtist" width="600" height="330" style="display: block; box-sizing: border-box; height: 301px; width: 602px;"></canvas>
                     </div>
                 </div>
             </div>
@@ -68,7 +82,10 @@ include "query.php";
                 <div class="card border-secondary mb-3 text-center">
                     <h5 class="card-header">Top Played Album (All time)</h5>
                     <div class="card-body">
-                        <canvas id="topAlbum" width="600" height="300" style="display: block; box-sizing: border-box; height: 301px; width: 602px;"></canvas>
+                        <canvas id="topAlbum" width="600" height="330" style="display: block; box-sizing: border-box; height: 301px; width: 602px;"></canvas>
+                        <div class="row">
+                            <small class="text-dark fst-italic">*2nd: Fate/stay night UNLIMITED BLADE WORKS Original Soundtrack</small>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -76,7 +93,7 @@ include "query.php";
                 <div class="card border-secondary mb-3 text-center">
                     <h5 class="card-header">Top Played Song (All time)</h5>
                     <div class="card-body">
-                        <canvas id="topSong" width="600" height="300" style="display: block; box-sizing: border-box; height: 301px; width: 602px;"></canvas>
+                        <canvas id="topSong" width="600" height="330" style="display: block; box-sizing: border-box; height: 301px; width: 602px;"></canvas>
                     </div>
                 </div>
             </div>
@@ -84,7 +101,7 @@ include "query.php";
         <div class="row">
             <div class="col-md-4">
                 <div class="card border-secondary mb-3 text-center">
-                    <h5 class="card-header">Top 10 Songs By Year (All time)</h5>
+                    <h5 class="card-header">Top 10 Songs By Year</h5>
                     <div class="card-body">
                         <!-- Table -->
                         <table class="table table-bordered table-striped table-hover">
@@ -96,6 +113,13 @@ include "query.php";
                                 </tr>
                             </thead>
                             <tbody>
+                                <?php foreach ($topSongsYear as $row) :
+                                    echo "<tr>";
+                                    foreach (["year", "track_name", "num_plays"] as $field) {
+                                        echo "<td>" . $row[$field] . "</td>";
+                                    } ?>
+                                <?php endforeach;
+                                echo "<tr>"; ?>
                             </tbody>
                         </table>
                     </div>
@@ -106,32 +130,26 @@ include "query.php";
                     <h5 class="card-header">Top 10 Songs by Artist</h5>
                     <div class="card-body">
                         <div class="col-sm-4">
-                            <div class="input-group">
-                                <!-- Display text -->
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Search artist: </span>
+                            <form method="GET">
+                                <div class="input-group">
+                                    <!-- Display text -->
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Search artist: </span>
+                                    </div>
+                                    <!-- Input box for project name -->
+                                    <input class="form-control" name="artist" type="text" value="<?= $artist ?>" style="max-width: 400px;">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="submit">Search
+                                            <i class="fa fa-search" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                                <!-- Input box for project name -->
-                                <input class="form-control" name="artist" type="text" value="<?php isset($_GET["artist"]) ? $_GET["artist"] : "Taylor Swift" ?>" placeholder="Taylor Swift" style="max-width: 300px;">
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary" type="submit">Search
-                                        <i class="fa fa-search" aria-hidden="true"></i>
-                                    </button>
-                                </div>
-                            </div>
+                            </form>
                         </div>
                         <br>
-                        <canvas id="songbyartist" width="600" height="300" style="display: block; box-sizing: border-box; height: 301px; width: 602px;"></canvas>
+                        <canvas id="songbyartist" width="600" height="330" style="display: block; box-sizing: border-box; height: 301px; width: 602px;"></canvas>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12" style="display:flex; justify-content:flex-end">
-                <a class="btn btn-success" href="listenbrainz">Go to dataset
-                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                </a>
             </div>
         </div>
     </div>
@@ -141,24 +159,29 @@ include "query.php";
         var ctx2 = document.getElementById('topAlbum').getContext('2d');
         var ctx3 = document.getElementById('topSong').getContext('2d');
         var ctx4 = document.getElementById('songbyartist').getContext('2d');
+
+        var artist = <?php echo json_encode($topArtist, JSON_HEX_TAG); ?>;
+        var artistCount = <?php echo json_encode($topArtistCount, JSON_HEX_TAG); ?>;
+        var album = <?php echo json_encode($topAlbums, JSON_HEX_TAG); ?>;
+        var albumCount = <?php echo json_encode($topAlbumsCount, JSON_HEX_TAG); ?>;
+        var song = <?php echo json_encode($topSong, JSON_HEX_TAG); ?>;
+        var songCount = <?php echo json_encode($topSongCount, JSON_HEX_TAG); ?>;
+        var songArtist = <?php echo json_encode($topSongsArtist, JSON_HEX_TAG); ?>;
+        var songArtistCount = <?php echo json_encode($topSongsArtistCount, JSON_HEX_TAG); ?>;
+
         // Chart.defaults.global.defaultFontStyle = 'Bold'
         var topArtist = new Chart(ctx1, {
             type: 'bar',
             data: {
-                labels: ["Radiohead", "The Beatles", "Pink Floyd", "Daft Punk", "Muse"],
+                labels: artist,
                 datasets: [{
                     label: 'Play Count',
-                    data: [582658, 559065, 440631, 414091, 335187],
+                    data: artistCount,
                     backgroundColor: 'rgba(43,48,93, 0.5)',
                     borderColor: 'rgba(43,48,93)',
                 }]
             },
             options: {
-                // plugins: {
-                //     legend: {
-                //         display: false
-                //     },
-                // },
                 indexAxis: 'y',
                 elements: {
                     bar: {
@@ -171,20 +194,15 @@ include "query.php";
         var topAlbum = new Chart(ctx2, {
             type: 'bar',
             data: {
-                labels: ["Greatest Hits", ["Fate/stay night UNLIMITED BLADE WORKS", "Original Soundtrack"], "Discovery", "Music Of The Spheres", "Random Access Memories"],
+                labels: album,
                 datasets: [{
                     label: 'Play Count',
-                    data: [128835, 42716, 36881, 31290, 27073],
+                    data: albumCount,
                     backgroundColor: 'rgba(219,185,109, 0.5)',
                     borderColor: 'rgba(219,185,109)',
                 }]
             },
             options: {
-                // plugins: {
-                //     legend: {
-                //         display: false
-                //     },
-                // },
                 indexAxis: 'y',
                 elements: {
                     bar: {
@@ -197,26 +215,15 @@ include "query.php";
         var topSong = new Chart(ctx3, {
             type: 'bar',
             data: {
-                labels: [
-                    ["Inside the Deku Tree", "(近藤浩治)"],
-                    ["Docks Background Ambience", "(Michael Z. Land)"],
-                    ["Smells Like Teen Spirit", "(Nirvana)"],
-                    ["Karma Police", "(Radiohead)"],
-                    ["Teardrop", "(Massive Attack)"]
-                ],
+                labels: song,
                 datasets: [{
                     label: 'Play Count',
-                    data: [113348, 49199, 15159, 14378, 13346],
+                    data: songCount,
                     backgroundColor: 'rgba(255,192,40, 0.25)',
                     borderColor: 'rgba(255,192,40,1)',
                 }]
             },
             options: {
-                // plugins: {
-                //     legend: {
-                //         display: false
-                //     },
-                // },
                 indexAxis: 'y',
                 elements: {
                     bar: {
@@ -229,31 +236,21 @@ include "query.php";
         var dailyListen = new Chart(document.getElementById("songbyartist"), {
             type: 'bar',
             data: {
-                labels: ["Shake It Off", "Blank Space", "Style", "We Are Never Ever Getting Back Together", "Look What You Made Me Do", "Bad Blood", "Wildest Dreams", "Out of the Woods", "Everything Has Changed (feat. Ed Sheeran)", " I Knew You Were Trouble"],
+                labels: songArtist,
                 datasets: [{
                     label: 'Play Count',
-                    backgroundColor: 'rgba(255,99,132, 0.2)',
-                    borderColor: 'rgba(255,99,132)',
-                    data: [4731, 4216, 3268, 2883, 2686, 2590, 2284, 2223, 2128, 2068]
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgb(255,99,132)',
+                    data: songArtistCount
                 }]
             },
             options: {
-                // plugins: {
-                //     legend: {
-                //         display: false
-                //     },
-                // },
-                title: {
-                    display: true,
-                    text: 'Predicted world population (millions) in 2050'
-                },
-                tooltips: {
-                    callbacks: {
-                        label: function(tooltipItem) {
-                            return tooltipItem.yLabel;
-                        }
+                elements: {
+                    bar: {
+                        borderWidth: 2,
                     }
-                }
+                },
+                responsive: true,
             }
         });
     </script>
