@@ -1,16 +1,12 @@
-**COSC2638 - Cloud Computing**
+# Mekong Project Management with PHP to Google Cloud
 
-**RMIT University**
-
-**Student name: Pham Cong Minh**
-
-**Student ID: s3818102**
-
-**Assignment 1: Google Cloud Platform**
+_This is my first assignment in Cloud Computing._
 
 ---
 
-## Deployed Link: [s3818102-asm1.as.r.appspot.com](https://s3818102-asm1.as.r.appspot.com)
+## Deployed Link: [Link](https://s3818102-asm1.as.r.appspot.com)
+
+Expired by the end of September
 
 ---
 
@@ -26,9 +22,13 @@ composer require google/cloud-bigquery
 composer require google/apiclient
 ```
 
+#### Dataset
+
+Please access this [link](https://data.vietnam.opendevelopmentmekong.net/dataset/mekong-infrastructure-tracker/resource/9640d37d-53ca-42fb-83a0-04de89228f1d)
+
 ---
 
-## Problem 1: CRUD project.csv file with PHP Application
+## Problem 1: CRUD file with PHP Application
 
 #### Features:
 
@@ -69,10 +69,11 @@ This problem using BigQuery via Google Client API so that some command and synta
 - Allow pagination in the list including: page size, page number, next, previous, first, last page. (Default page size is 10)
 - Allows to search projects by name.
 - Allows to filter projects by countries by a checkbox.
+- Allows user to view more information about the project.
 
 #### File Management:
 
-- `bigquery.php`: Display page for BigQuery task
+- `bigquery.php`: Display page for BigQuery task (include pagination and query)
 
 ---
 
@@ -82,10 +83,10 @@ This problem using BigQuery via Google Client API so that some command and synta
 
 #### Features:
 
-- Display table with `timestamp`, `username`, `artist`,`album`,`song`,`tag`.
-- Able to search the name of Artist / Album / Song / Tags.
-- Report dashboard
-- Search tops 10 song by artist
+- Display table with `timestamp`, `username`, `artist`,`album`,`song`,`tags`.
+- Able to search with combination of Artist / Album / Song / Tags.
+- Report dashboard on top played Artist / Album / Song.
+- Search tops 10 song by Artist
 
 #### File management:
 
