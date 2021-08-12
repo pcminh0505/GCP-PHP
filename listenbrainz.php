@@ -218,36 +218,38 @@ $rows = $response->getRows();
                             </li>
                         <? } ?>
                         <?php
-                        // Define the range to control display of pages
-                        $superset_range = range(1, $lastPage - 1);
-                        $subset_range = range($page - 1, $page + 1);
-                        // adjust the range(if required)
-                        foreach ($subset_range as $p) {
-                            if ($p < 1) {
-                                array_shift($subset_range);
-                                if (in_array($subset_range[count($subset_range) - 1] + 1, $superset_range)) {
-                                    $subset_range[] = $subset_range[count($subset_range) - 1] + 1;
-                                }
-                            } elseif ($p > $lastPage - 1) {
-                                array_pop($subset_range);
-                                if (in_array($subset_range[0] - 1, $superset_range)) {
-                                    array_unshift($subset_range, $subset_range[0] - 1);
+                        if ($lastPage != 1) {
+                            // Define the range to control display of pages
+                            $superset_range = range(1, $lastPage - 1);
+                            $subset_range = range($page - 1, $page + 1);
+                            // adjust the range(if required)
+                            foreach ($subset_range as $p) {
+                                if ($p < 1) {
+                                    array_shift($subset_range);
+                                    if (in_array($subset_range[count($subset_range) - 1] + 1, $superset_range)) {
+                                        $subset_range[] = $subset_range[count($subset_range) - 1] + 1;
+                                    }
+                                } elseif ($p > $lastPage - 1) {
+                                    array_pop($subset_range);
+                                    if (in_array($subset_range[0] - 1, $superset_range)) {
+                                        array_unshift($subset_range, $subset_range[0] - 1);
+                                    }
                                 }
                             }
-                        }
-                        // display intermediate pagination links
-                        if ($subset_range[0] > $superset_range[0]) {
-                            echo " ... &nbsp;";
-                        }
-                        foreach ($subset_range as $p) {
-                            $class = '';
-                            if ($currentPage == $p) {
-                                $class = 'active';
+                            // display intermediate pagination links
+                            if ($subset_range[0] > $superset_range[0]) {
+                                echo " ... &nbsp;";
                             }
-                            echo "<li class='paginate_button page-item $class'><a href='?LBartist=$LBartist&LBalbum=$LBalbum&LBsong=$LBsong&LBtag=$LBtag&page=$p&limit=$limit' class='page-link'>$p</a></li>";
-                        }
-                        if ($subset_range[count($subset_range) - 1] < $superset_range[count($superset_range) - 1]) {
-                            echo "&nbsp; ... ";
+                            foreach ($subset_range as $p) {
+                                $class = '';
+                                if ($currentPage == $p) {
+                                    $class = 'active';
+                                }
+                                echo "<li class='paginate_button page-item $class'><a href='?countrybq=$countrybq&namebq=$namebq&page=$p&limit=$limit' class='page-link'>$p</a></li>";
+                            }
+                            if ($subset_range[count($subset_range) - 1] < $superset_range[count($superset_range) - 1]) {
+                                echo "&nbsp; ... ";
+                            }
                         }
                         ?>
                         <!-- Show the last page with active stage -->
