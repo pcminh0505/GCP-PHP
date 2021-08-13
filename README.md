@@ -14,12 +14,16 @@ Expired by the end of September
 
 To begin, install the preferred dependency manager for PHP, [Composer](https://getcomposer.org/).
 
-Now to install just these components:
+Require just these components:
 
 ```
 composer require google/cloud-storage
 composer require google/cloud-bigquery
 composer require google/apiclient
+```
+Install components
+```
+composer install
 ```
 
 #### Dataset
